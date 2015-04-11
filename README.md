@@ -22,9 +22,10 @@ But please credit the source.
 ## Links to workshop materials
 
 - **Introduction to R and QGIS for transport applications** (Robin Lovelace).
+Available as a [pdf](https://github.com/Robinlovelace/GIS4TA/releases/download/0.1/intro-r-qgis-4ta.pdf) and a [repository](https://github.com/Robinlovelace/GIS4TA/blob/master/intro-r-qgis-4ta.Rmd). 
 - **Route Analysis using R and Google Maps** (Nick Bearman). Available as a [.pdf](https://github.com/nickbearman/transport-workshop/raw/master/transport-workshop.pdf) and a [repository](https://github.com/nickbearman/transport-workshop).
 - **Collecting, processing and analysing large GPS and Smartphone datasets** (Richard Ellison and Adrian Ellison)
-- **Hackathon to develop methods for identifying optimal routes for bicycle paths** (Godwin Yeboah)
+- **Hackathon to develop methods for identifying optimal routes for bicycle paths** (Godwin Yeboah). Available as a [repository](https://github.com/spatialscientist/GIS4TA2015).
 
 
 ## Submissions to 'best map' award
