@@ -1,0 +1,107 @@
+---
+title: "Introduction to R and QGIS for transport applications"
+author: "Robin Lovelace"
+output: pdf_document
+---
+
+```{r, echo=FALSE}
+library(grid)
+library(png)
+```
+
+
+# Introduction
+
+This document provides a taster of QGIS and R, two of the most popular
+and powerful open source GIS productions, for transport applications.
+Both programs are vast, in terms of features and their code-base,
+and take many months of dedicated practice to master. Therefore
+the aim is to showcase capabilities and demonstrate key functionality.
+This will hopefully form the foundation for further study; the
+references provide some pointers in that direction.
+
+Conventional GIS courses are rather 'spoon feed'
+(see [ESRI's free online courses](http://www.esri.com/training/main the students), for example), providing a long list of screenshots to follow
+in a set order. This course takes a deliberately different approach.
+The challenges are deliberately more open-ended and you are encouraged
+to search online, explore the software's help and, most importantly,
+ask each other (and the amazing FOSS4G community) for help.
+
+We will begin by using QGIS because it is easier to get used to for most
+people, with it's graphical user interface. R, by contrast, has a steep
+learning curve if you are not acquainted with using a command-line interface.
+
+# QGIS
+
+QGIS is the most widely used open source GIS program and an amazing
+example of community-led software development. It is a general-purpose
+geographic information system that can solve a wide range of geographical
+problems. With its interface to Python, it has a strong user community
+developing powerful, attractive and user-friendly add-ons.
+
+The best way to learn more about QGIS is to use it.
+Download the latest version from [qgis.org](http://www.qgis.org). 
+
+For this chapter we will primarily be using the basic QGIS
+features to load, explore and query geographic information related
+to transport systems. However, the following three add-ons are highly
+recommended for transport applications. These can be installed from
+**Plugins > Manage and Install Plugins**:
+
+- The **OpenLayers Plugin** is not transport-specific but provides an
+interactive, 'slippy' base map on which transport data can be displayed.
+In addition, a number of transport-orientated maps are provided, including
+*OpenCycleMap*.
+- **FlowMapper** provides functionality for visualising travel flows
+between origins and destinations (a flow matrix).
+- **Road Graph** calculates the shortest path between origins and
+destinations.
+
+A very powerful but slightly more complicated plugin is the PGRouting plugin.
+We will not be using this for the present chapter. For now we focus on
+getting to grips with basic tasks such as loading and saving data.
+
+## Loading and saving data
+
+The network data was downloaded using the **OpenStreetMap**
+Plugin. The following code was entered into the filtering panel to 
+remove the superflous tracks:
+
+```
+"highway"  != 'unclassified'  AND "highway" != 'unsurfaced' 
+AND "highway"  != 'bridleway'  AND "highway" != 'living_street'
+AND "highway"  != 'tertiary'  AND "highway" != 'track'
+```
+
+QGIS can load and save data in a wide variety of formats.
+To load the administrative zones, open the 'msoas-slope' shapefile.
+To load the transport network, use the 'Add Spatialite Layer' option.
+
+**Challenge: load and look at these layers ---
+it's not about learning how to learn!**
+
+## Finding the shortest path in QGIS
+
+Activate the Road Graph plugin and you should see a new panel appear
+in the left-hand side of the screen, below 'Layers'. Experiment
+with this. See if you can find the fastest route across Leeds.
+the end result should look a little like that displayed in 
+Fig. 1.
+
+```{r, echo=FALSE}
+grid.raster(readPNG("figures/leeds-shortest.png"))
+```
+
+## Exploring cirquity
+
+
+## Exporting a map of an area of interest
+
+The final QGIS challenge is open-ended. Identify a place you are
+particularly interested with reference to a (real or imaginary)
+transport problem. The challenge is to create a map for export
+that illustrates the problem (hint: use the 'print composer').
+Bonus points if your map can provide insight into the solution.
+
+# R for transport applications
+
