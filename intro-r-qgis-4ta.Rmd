@@ -1,7 +1,9 @@
 ---
 title: "Introduction to R and QGIS for transport applications"
 author: "Robin Lovelace"
-output: pdf_document
+output:
+  pdf_document:
+    fig_caption: yes
 ---
 
 ```{r, echo=FALSE}
@@ -24,12 +26,32 @@ Conventional GIS courses are rather 'spoon feed'
 (see [ESRI's free online courses](http://www.esri.com/training/main the students), for example), providing a long list of screenshots to follow
 in a set order. This course takes a deliberately different approach.
 The challenges are deliberately more open-ended and you are encouraged
-to search online, explore the software's help and, most importantly,
+to search on-line, explore the software's help and, most importantly,
 ask each other (and the amazing FOSS4G community) for help.
 
 We will begin by using QGIS because it is easier to get used to for most
 people, with it's graphical user interface. R, by contrast, has a steep
 learning curve if you are not acquainted with using a command-line interface.
+First, let's download the data we'll be using for this tutorial.
+
+# The data
+
+The datasets used for this project can be downloaded in a single file,
+from the [GIS4TA-data repository](https://github.com/Robinlovelace/GIS4TA-data). The [ZIP file](https://github.com/Robinlovelace/GIS4TA-data/archive/master.zip) is automatically 
+created by GitHub and is available for download from here:
+https://github.com/Robinlovelace/GIS4TA-data/archive/master.zip
+
+All the data we'll be using in this tutorial is in the `leeds`
+directory. In this folder you should see the following files:
+
+- `cyclepaths.geojson`, representing dedicated cycle paths in Leeds
+- `msoas-slope.*`, these files together constitute a 'Shapefile' 
+representing the 107 'MSOA' administrative zones of Leeds Local Authority.
+- `travel-net-mini.sqlite`, a dataset representing the transport network of
+Leeds.
+
+These will form the basis of our analysis in QGIS and R.
+
 
 # QGIS
 
@@ -44,28 +66,48 @@ Download the latest version from [qgis.org](http://www.qgis.org).
 
 For this chapter we will primarily be using the basic QGIS
 features to load, explore and query geographic information related
-to transport systems. However, the following three add-ons are highly
-recommended for transport applications. These can be installed from
-**Plugins > Manage and Install Plugins**:
+to transport systems. However, there are many
+plugins suitable for transport applications.
+These can be installed from
+**Plugins > Manage and Install Plugins**. In this chapter we'll be using
+the following two plugins:
 
 - The **OpenLayers Plugin** is not transport-specific but provides an
 interactive, 'slippy' base map on which transport data can be displayed.
 In addition, a number of transport-orientated maps are provided, including
 *OpenCycleMap*.
-- **FlowMapper** provides functionality for visualising travel flows
-between origins and destinations (a flow matrix).
 - **Road Graph** calculates the shortest path between origins and
 destinations.
 
-A very powerful but slightly more complicated plugin is the PGRouting plugin.
-We will not be using this for the present chapter. For now we focus on
+In addition to these (needed for the tutorial) the following two plugins
+are useful for more advanced applications:
+
+- **FlowMapper** provides functionality for visualising travel flows
+between origins and destinations (a flow matrix).
+- **PGRouting**, an interface to the powerful **PGRouting** extension to
+the PostGIS spatial database system for route planning.
+
+We will not be using these for the present chapter. For now we focus on
 getting to grips with basic tasks such as loading and saving data.
 
 ## Loading and saving data
 
+QGIS can load and save data in a wide variety of formats.
+To load the administrative zones, open the 'msoas-slope' Shapefile.
+Shapefiles are a very common proprietary GIS format gradually
+being replaced by alternatives such as
+[GeoJSON](http://geojson.org/) (and the related
+[TopoJSON](https://github.com/mbostock/topojson)).
+
+Click on the 'add vector layer' button on the left and navigate
+to the data folder. Double clicking on the `msoas-slope.shp`
+should load the file into QGIS.
+
+**Challenge: add a transport-related basemap using the OpenLayers plugin loaded in the first section.**
+
 The network data was downloaded using the **OpenStreetMap**
 Plugin. The following code was entered into the filtering panel to 
-remove the superflous tracks:
+remove the superfluous tracks:
 
 ```
 "highway"  != 'unclassified'  AND "highway" != 'unsurfaced' 
@@ -73,12 +115,13 @@ AND "highway"  != 'bridleway'  AND "highway" != 'living_street'
 AND "highway"  != 'tertiary'  AND "highway" != 'track'
 ```
 
-QGIS can load and save data in a wide variety of formats.
-To load the administrative zones, open the 'msoas-slope' shapefile.
+We've already saved the data for you, so you don't need to
+go through this process. The point is that
+with open source it is easy to document a dataset's origin.
+
 To load the transport network, use the 'Add Spatialite Layer' option.
 
-**Challenge: load and look at these layers ---
-it's not about learning how to learn!**
+**Challenge: load and look at this transport layer**
 
 ## Finding the shortest path in QGIS
 
@@ -88,12 +131,36 @@ with this. See if you can find the fastest route across Leeds.
 the end result should look a little like that displayed in 
 Fig. 1.
 
-```{r, echo=FALSE}
+```{r, fig.cap="A shortest part across Leeds, generated by QGIS", echo=FALSE}
 grid.raster(readPNG("figures/leeds-shortest.png"))
 ```
 
-## Exploring cirquity
+**Challenge: find the shortest path from Leeds station to the University in QGIS.**
 
+## Subset and save data using QGIS
+
+There are a number of ways to subset data from QGIS. You can select
+with a box or other polygon, use a spatial intersect with another
+object or use the the 'filter tool'. One of the most versatile tools
+available to do this (and a great way to view the attribute data of
+spatial objects) is the the Attribute Table.
+
+Following the steps below will result in the creation of a new object,
+a *subset* of network data, that removes everything other than 
+the type of route you desire.
+
+1. Right click on the travel_net layer in the layers panel and select  **Filter**.
+2. Select first the variable of interest and then the value
+(clicking on 'sample' will show a selection of these). See Fig. 2.
+The colour of the selected features should change to yellow.
+3. To save the subset of the data, again right click on the layer name
+and select **Save**. Critically, click **Save only selected features**.
+There are many formats to choose from. We used the GeoJSON output type
+for the cycle paths. These will be used in the subsequent section.
+
+```{r, fig.cap="The query builder interface in QGIS", fig.height=3}
+grid.raster(readPNG("figures/query-builder.png"))
+```
 
 ## Exporting a map of an area of interest
 
@@ -104,4 +171,92 @@ that illustrates the problem (hint: use the 'print composer').
 Bonus points if your map can provide insight into the solution.
 
 # R for transport applications
+
+R is a powerful and extremely flexible program, with over 
+7,000 add-on packages for solving all manner of numerical
+(and some non-numerical) problems.
+
+We will only scratch the surface of what is possible with R:
+it's better to gain a good understanding of the basics and
+progressing gradually than going instantly to advanced applications.
+
+So in this section we will simply load and subset the data.
+We will use the **raster** and **RSQLite** packages for loading the
+Shapefile and SQLite datasets respectively.
+
+From within RStudio, enter the following commands in the console:
+
+```{r, eval=FALSE}
+pkgs <- c("raster", "rgdal")
+install.packages(pkgs)
+lapply(pkgs, library, character.only = T)
+```
+
+```{r, include=FALSE}
+pkgs <- c("RSQLite", "raster", "devtools", "rgdal")
+lapply(pkgs, library, character.only = T)
+```
+
+
+We'll start by loading and viewing the Shapefile:
+
+```{r, fig.show='hide'}
+leeds_msoas <- shapefile("GIS4TA-data/leeds/msoas-slope.shp")
+plot(leeds_msoas)
+```
+
+If an image of Leeds Local Authority appeared, congratulations: you've
+just loaded and plotted some spatial data in R!
+
+```{r, fig.show='hide'}
+leeds_net <- readOGR(dsn = "GIS4TA-data/leeds/cyclepaths.geojson", layer = "OGRGeoJSON")
+plot(leeds_net)
+```
+
+The final challenge is to use a basic filter to find canal paths.
+To see what variables are stored in the cycle paths,
+type `names(leeds_net)`.
+Further, explore the `highway` types and modify the code below to
+plot different types of path:
+
+```{r, fig.height=2.5, fig.cap="Aire Valley Towpath plotted with R"}
+summary(leeds_net$name)[1:3] # some of the line names
+sel <- grep(pattern = "Aire Valley Towpath", x = leeds_net$name)
+towpaths <- leeds_net[sel, ] # create a new object of towpaths
+plot(towpaths) # plot the result
+```
+
+There are many more things we can do with R for transport applications.
+Because it is an extremely flexible programming language, with strong
+interfaces to all major low-level languages such as C++, you really are
+limited only by your imagination with R if you can program. Fortunately,
+even if you cannot, R's extensive range of packages provides functions
+useful for transport planners. Moreover, the supportive open-source community
+surrounding R has provided a number of resources that enable
+further learning. Some of these are described in the further resources and
+references. In addition, online sources such as
+[r-bloggers](http://www.r-bloggers.com/),
+[stackoverflow](http://stackoverflow.com/)
+and [gis.stackexchange](http://gis.stackexchange.com/)
+are recommended.
+
+# References
+
+Graser, A. (2014). Learning Qgis. Packt Publishing Ltd.
+
+Lovelace, R. (2014). Harnessing open street map data with R and QGIS. EloGeo. Retrieved from http://eprints.whiterose.ac.uk/77643/
+
+Lovelace, R., & Cheshire, J. (2014). Introduction to visualising spatial data in R. National Centre for Research Methods Working Papers, 14(03). Retrieved from https://github.com/Robinlovelace/Creating-maps-in-R
+
+Urrutia Fernández, M. (2014). Quantum GIS (QGIS) Geographic Information System Tutorial. http://upcommons.upc.edu/pfc/bitstream/2099.1/23860/1/TFM_MLTM%20M.Angels%20Urrutia_english.pdf
+
+
+
+```{r, eval=FALSE, echo=FALSE}
+install_github("pschmied/RSQLite.spatialite")
+drv <- dbDriver("SQLite")
+con <- dbConnect(drv = drv, dbname = "GIS4TA-data//leeds/travel-net.sqlite")
+init_spatialite(con)
+tnet <- dbGetQuery(con, "SELECT *")
+```
 

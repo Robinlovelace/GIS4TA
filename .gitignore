@@ -3,4 +3,5 @@
 .RData
 *.html
 *.pdf
-GIS4TA-data
+GIS4TA-data*
+leeds.qgs~
