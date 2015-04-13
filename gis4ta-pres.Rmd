@@ -1,0 +1,137 @@
+---
+title: "GIS for Transport Applications"
+author: "Robin Lovelace"
+date: "April 13, 2015"
+output:
+  ioslides_presentation:
+    transition: slower
+runtime: shiny
+logo: ~/Dropbox/Public/img/logos/cdrc-square.png
+---
+
+```{r, echo=FALSE, include=FALSE}
+pkgs <- c("grid", "png")
+lapply(pkgs, library, character.only = T)
+# bibliography: "~/Documents/R.bib"
+```
+
+## Welcome and housekeeping
+
+09:30 – 10:00   Registration and refreshments
+
+10:00 – 11:00	 Introduction to R and QGIS for transport applications
+
+11:00 – 12:00	 Route analysis using R and Routino 
+
+12:00 – 12:30	 Presentation of maps 
+
+**12:30 – 13:30 	 Lunch**
+
+13:30 – 14:30	Collecting, processing and analysing large GPS and Smartphone datasets
+
+14:30 – 16:30	 Hackathon 
+
+16:30 – 17:00	 Best map prize announcement.
+
+# QGIS for transport applications
+
+## The uptake of QGIS
+
+```{r, echo=FALSE}
+grid.raster(readPNG("/home/robin/Pictures/Selection_178.png"))
+```
+
+
+## Flexible and user friendly
+
+```{r, echo=FALSE}
+grid.raster(readPNG("~/repos/bikeR/figures/wy-overview.png"))
+```
+
+## Compared with R...
+
+```{r, echo=FALSE}
+grid.raster(readPNG("~/repos/bikeR/figures/seriousWY.png"))
+```
+
+# R for transport applications
+
+## Why R?
+
+See the free, open source, online tutorial [github.com/robinlovelace/Creating-maps-in-R](https://github.com/Robinlovelace/Creating-maps-in-R).
+
+```{r, echo=FALSE}
+f <- "/home/robin/repos/Creating-maps-in-R/figure/facet_london.png"
+grid.raster(readPNG(f))
+```
+
+## The packages used
+
+Can be installed and loaded in 6 lines of code:
+
+```{r, eval=FALSE}
+pkgs <- c("devtools", "rgdal", "raster", "ggmap") # official packages
+install.packages(pkgs) 
+library(devtools) # enables installation of leaflet
+gh_pkgs <- c("rstudio/leaflet", "robinlovelace/stplanr") 
+install_github(gh_pkgs) # install packages on github
+lapply(c(pkgs, "leaflet", "stplanr"), library, character.only = T) # load all
+```
+
+## RStudio
+
+RStudio Desktop is highly recommended.
+
+```{r, echo=FALSE}
+img <- readPNG("/home/robin/repos/robinlovelace.github.io/img/rstudio-shiny-button.png")
+grid.raster(img)
+```
+
+```{r, echo=FALSE, include=FALSE}
+pkgs <- c("devtools", "shiny", "rgdal", "rgeos", "ggmap") # official packages
+gh_pkgs <- c("rstudio/leaflet", "robinlovelace/stplanr") 
+lapply(c(pkgs, "leaflet", "stplanr"), library, character.only = T) # load all
+```
+
+## Leaflet
+
+An R interface to the Leaflet JavaScript library, compatible with Shiny.
+
+```{r, eval=FALSE}
+cent <- geocode("Leeds")
+leaflet() %>% 
+  addTiles() %>%
+  addCircleMarkers(data = cent)
+```
+
+# III: National Propensity to Cycle Tool (NPCT)
+
+## Early user testing
+
+```{r, echo=FALSE}
+grid.raster(readPNG("~/Pictures/Selection_115.png"))
+```
+
+## Genius additions: zoom dependent selection; freeze Scope
+
+```{r, echo=FALSE}
+grid.raster(readPNG("~/Pictures/Selection_156.png"))
+```
+
+## Running the app for different cities
+
+```{r, eval=FALSE}
+runApp("~/repos/pct-shiny/norwich/", launch.browser = T)
+runApp("~/repos/pct-shiny/cambridge/", launch.browser = T)
+runApp("~/repos/pct-shiny/manchester/", launch.browser = T)
+```
+
+# IV: Get your hands dirty
+
+## Working through **Introduction to R and QGIS**
+
+- Don't worry if you don't finish
+- Prioritise either R or QGIS
+- Interact with us and others
+- Any questions
+
