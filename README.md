@@ -30,7 +30,18 @@ Available as a [pdf](https://github.com/Robinlovelace/GIS4TA/releases/download/0
 
 ## Submissions to 'best map' award
 
-- [Rafael Pereira](...)
+- [Rafael Pereira](http://www.geog.ox.ac.uk/graduate/research/rpereira.html): Transport System of Rio de Janeiro:
+
+[![](https://tgrg.files.wordpress.com/2015/04/rsz_1bus_pts_of_rio_gtfs_osm_clear500_033_enviado_1mb.png?w=474)](https://tgrg.files.wordpress.com/2015/04/rsz_1bus_pts_of_rio_gtfs_osm_clear500_033_enviado_1mb.png)
+
+- [David Brenig-Jones](http://www.itpworld.net/team_DavidBrenigJones.html): Manilla's Bus System: 
+
+[![](https://tgrg.files.wordpress.com/2015/04/map-gis4tr-metromanila-bus-frequency-and-ba-bubbles.png)](https://tgrg.files.wordpress.com/2015/04/map-gis4tr-metromanila-bus-frequency-and-ba-bubbles.pdf)
+
+- [Crispin Cooper](http://www.cardiff.ac.uk/research/sustainable-places/contacts-and-people/staff/dr-crispin-cooper): Analysing cycle flows and collisions
+in Cardiff:
+
+[![](https://tgrg.files.wordpress.com/2015/04/crispin_map.png?w=474)](https://tgrg.files.wordpress.com/2015/04/crispin_map.png)
 
 
 ## Additional information
