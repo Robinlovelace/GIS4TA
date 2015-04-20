@@ -1,12 +1,10 @@
 ---
 title: "GIS for Transport Applications"
 author: "Robin Lovelace"
-date: "April 13, 2015"
+date: "April 14, 2015"
 output:
   ioslides_presentation:
     transition: slower
-runtime: shiny
-logo: ~/Dropbox/Public/img/logos/cdrc-square.png
 ---
 
 ```{r, echo=FALSE, include=FALSE}

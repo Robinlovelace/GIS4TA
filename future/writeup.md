@@ -1,18 +1,7 @@
----
-title: "QGIS vs R for sustainable transport planning"
-author: "Robin Lovelace"
-output:
-  html_document:
-    highlight: monochrome
-    keep_md: yes
-bibliography: ~/Documents/Transport.bib
----
+# QGIS vs R for sustainable transport planning
+Robin Lovelace  
 
-```{r, echo = F, include=FALSE}
-pkgs <- c("ggmap", "grid", "png", "knitr")
-lapply(pkgs, library, character.only = TRUE)
-opts_knit$set(root.dir = "../")
-```
+
 
 
 The 23rd iteration of the GIS Research UK conference
@@ -93,29 +82,43 @@ The practical demonstrated 2 ways of routing in R:
 
 1. Using **ggmap**. The following code was used to navigate to the event!
 
-```{r}
+
+```r
 from <- 'Leeds station, New Station Street, Leeds LS1 5DL, United Kingdom'
 to <- 'LS2 9JT'
 route_df <- route(from, to, structure = 'route', mode = 'walking')
+```
+
+```
+## Information from URL : http://maps.googleapis.com/maps/api/directions/json?origin=Leeds+station,+New+Station+Street,+Leeds+LS1+5DL,+United+Kingdom&destination=LS2+9JT&mode=walking&units=metric&alternatives=false&sensor=false
+```
+
+```r
 qmap('Merrion Centre', zoom = 15) +
   geom_path(
     aes(x = lon, y = lat),  colour = 'red', size = 1.5,
     data = route_df, lineend = 'round')
 ```
 
+```
+## Map from URL : http://maps.googleapis.com/maps/api/staticmap?center=Merrion+Centre&zoom=15&size=640x640&scale=2&maptype=terrain&language=en-EN&sensor=false
+## Information from URL : http://maps.googleapis.com/maps/api/geocode/json?address=Merrion+Centre&sensor=false
+```
+
+![](writeup_files/figure-html/unnamed-chunk-2-1.png) 
+
 2. The [package I created, **stplanr**](https://github.com/Robinlovelace/stplanr),
 to get routes optimised for cyclists (see [transport-workshop.Rmd](https://github.com/nickbearman/transport-workshop/blob/master/transport-workshop.Rmd) for a working version):
 
-```{r, eval=FALSE}
+
+```r
 # Do not run. See 
 rquiet <- gLines2CyclePath(l = rlines, plan = "quietest")
 plot(rquiet[1,]) # route from Leeds station to Leeds University (North - South)
 plot(rquiet[2,]) # route from Leeds to Manchester!
 ```
 
-```{r, echo=FALSE}
-grid.raster(readPNG("figures/leeds-manchester.png"))
-```
+![](writeup_files/figure-html/unnamed-chunk-4-1.png) 
 
 # Large gps datasets with PostGIS
 
