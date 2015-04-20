@@ -1,0 +1,39 @@
+---
+title: "GIS for transport applications"
+author: "Robin Lovelace"
+date: "April 14, 2015"
+output:
+  pdf_document:
+    number_sections: yes
+    toc: yes
+---
+
+# GIS and transport: a gentle introduction
+
+# CTools of the trade
+
+This is an overview of the landscape and software 'ecosystem' for
+transport tools, with a focus on open source options.
+
+## QGIS for transport applications
+
+## R for transport applications
+
+# Who moves? Analysing travel survey data
+
+# Where do people move? Harnessing flow data
+
+# Where (exactly) do people move? Unpacking GPS data
+
+(Richard and Adrian)
+
+# Route Data
+
+(Nick Bearman)
+
+# Modelling transport behaviour
+
+
+
+# Transport GIS for a sustainable future
+

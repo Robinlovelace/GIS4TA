@@ -1,0 +1,76 @@
+---
+title: "QGIS vs R for sustainable transport planning"
+author: "Robin Lovelace"
+output: html_document
+---
+
+The 23rd iteration of the GIS Research UK conference
+([#GISRUK]())
+conference was the largest ever. 250 researchers,
+industry representatives and academics attended from the
+vibrant geospatial research communities in the
+UK, Europe and beyond. GISRUK has become a centrepoint for discussion
+of new methods, software and applications in the field. I
+was on the [organising committee](),
+reviewed some excellent papers for the event
+(a full list of these is
+[available for download here]()) and 
+attended some truly ground-breaking talks.
+This experience has shown that the geospatial community
+in the UK is strong,
+especially with regards to growth in open access
+data and open source software in the field.
+
+This article is about one part of GISRUK:
+[GIS for Transport Applications]()
+([#GIS4TA for short]()), a practical day-long workshop
+that preceded the main event.
+I organised the workshop and (with help from
+[Eusebio Odiari](),
+[The Transport Geography Research Group]()
+and the
+[Royal Geographical Society]())
+it seems to have been a great success. More than 30
+people attended, including a decent portion
+from transport consultancies such as
+[Integrated Transport Planning Ltd](http://www.itpworld.net/index.html)
+[TRP Consulting](http://www.trpconsult.com/) and the
+[European Railway Association (ERA)](http://www.era.europa.eu/Pages/Home.aspx).
+Specifically, it is about the use of R
+and QGIS tools for transport planning and the potential for their
+adoption in academic, public and private-sector transport planning.
+The focus of the workshop was deliberately on open source software
+and sustainable transport because these are growth
+areas in the field that are essential for
+[democratic]()
+and 
+[healthy]()
+transport systems compatible with the
+science of climate change.
+A recent report, for example, suggests we need to almost completely
+transition away from fossil fuels by 2050 [@McGlade2015].
+New datasets and methods for analysing and modelling them can
+help get us there in the recalcitrant transport sector
+[@Gossling2014].
+
+# R for transport applications
+
+The workshop kicked-off with a short
+talk on 'R and QGIS for transport applications',
+which laid out some of the motivations for running the
+workshop outlined above. Other than a few
+'early adopters', the transport modelling community
+is generally conservative, based largely on mature
+proprietary products such as
+[SATURN](http://www.saturnsoftware.co.uk/7.html)
+and 
+[Vissim](http://vision-traffic.ptvgroup.com/en-us/products/ptv-vissim/).
+
+The slides from this talk are available here:
+
+
+
+
+
+
+
