@@ -9,7 +9,7 @@ dissemination for people using Geographic Information Systems (GIS) for
 transport planning and related applications.
 
 The first [#GIS4TA](https://twitter.com/hashtag/gis4ta?src=hash) 
-(tweet the hashtag!) takes place in Leeds in April 2015. More details
+(tweet the hashtag!) took place in Leeds, April 2015. More details
 here: http://leeds.gisruk.org/gis4ta.html
 
 The main purpose of this repository is to link together resources that
@@ -18,6 +18,10 @@ use to others. Hopefully this set of links and resources will continue
 to grow. Feel free to fork, clone, copy and re-use any of the content.
 
 But please credit the source.
+
+A write-up of the event can be found on my personal website:
+
+http://robinlovelace.net/r/2015/04/20/r-vs-qgis-for-transport.html
 
 ## Links to workshop materials
 
