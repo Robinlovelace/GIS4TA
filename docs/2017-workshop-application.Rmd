@@ -1,11 +1,18 @@
+---
+output:
+  word_document: default
+  html_document: default
+---
 # GIS for Transport Applications (GIS4TA)
 
 # Overview
 
-This workshop is funded by the RGS via the TGRG.
+GIS4TA is a free-to-attend workshop about the emerging field of geospatial methods for transport research.
+The *second ever* GIS4TA will take place on Thursday and Friday **16^th^ - 17^th^ November 2017** (start date: [`2017-11-16`](https://jsfiddle.net/zygs3rLn/)).
 It was originally held as a 1 day event that preceded the GISRUK 2015 conference.
 This was an overwhelming success, with 20+ attendees and much positive feedback after the event.
 At the GISRUK 2017 conference in Manchester, it was agreed that there should be a full 2 day conference on the topic.
+It is sponsored by the Royal Geographic Society (RGS) via the Transport Geography Research Group (TGRG), with support from the Leeds Institute for Data Analytics (LIDA) and the Institute for Transport Studies (ITS).
 
 We plan for a relatively small (~30 people) but high impact conference at the cutting edge of geographical data analysis for transport policy.
 

@@ -3,6 +3,7 @@
 .RData
 *.html
 *.pdf
+*.docx
 GIS4TA-data*
 leeds.qgs~
 writeup_files
