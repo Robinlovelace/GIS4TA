@@ -31,11 +31,16 @@ By the end of the workshop, all participants should be better answer many questi
 
 # How to apply
 
-To apply, write a short (max: 100 words) statement explaining why you would like to participate in the event, containing something on how you will gain, and what you can contribute.
+To apply, first sign-up for a free ticket on the Eventbrite page.
+
+You should also write a short (max: 100 words) statement explaining why you would like to participate in the event, containing something on how you will gain, and what you can contribute.
 There are 2 ways you can send this:
 
-1. Send an email to the organiser: r . lovelace at leeds.ac.uk
-1. Put-in a [pull request](https://help.github.com/articles/about-pull-requests/) adding a file with your name (e.g. [`robinlovelace.md`](https://github.com/Robinlovelace/GIS4TA/blob/master/participants/robinlovelace.md)) to the [`participants`](https://github.com/Robinlovelace/GIS4TA/tree/master/participants) folder (preferred).
+1. Via the eventbrite page: https://www.eventbrite.co.uk/e/gis-for-transport-applications-tickets-38491819067
+
+1. Via a [pull request](https://help.github.com/articles/about-pull-requests/) adding a file with your name (e.g. [`robinlovelace.md`](https://github.com/Robinlovelace/GIS4TA/blob/master/participants/robinlovelace.md)) to the [`participants`](https://github.com/Robinlovelace/GIS4TA/tree/master/participants) folder in the https://github.com/Robinlovelace/GIS4TA GitHub repository (preferred)
+
+If more than 20 people sign-up we will rank the applications anonymously based on the abstract.
 
 # Call for maps
 
