@@ -29,6 +29,24 @@ By the end of the workshop, all participants should be better answer many questi
 - How to visualise results in an attractive and potentially on-line and interactive manner?
 - How can geospatial methods be used to create local evidence bases needed to transition away from fossil fuels in the transport sector?
 
+# Agenda
+
+Day 1:
+
+- Introduction and overview of GIS for transport
+- R for Transport applications (RL)
+- Car fleet data (CM)
+- OTP Tutuorial (MY)
+- Minihack 1
+
+Day 2:
+
+- Lightning talks
+- OSM for Transport applications (MP)
+- Microsimulation tutorial (AS)
+- Minihack and free working
+
+
 # How to apply
 
 To apply, first sign-up for a free ticket on the Eventbrite page.
