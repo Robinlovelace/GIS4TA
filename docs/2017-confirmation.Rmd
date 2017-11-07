@@ -1,0 +1,32 @@
+Dear GIS4TA Attendees,
+
+On Thursday next week we'll start the second GIS for Transport Applications workshop (GIS4TA).
+Note in terms of arrival, it is being held this year at the Leeds Institute for Data Analytics (LIDA) and will commence at 10:00 prompt on Thursday 16th.
+It will run until 16:30 on Friday 17th of November. 
+If you have any issues attending the whole event please let me know at r.lovelace@leeds.ac.uk
+
+For directions to **Level 11, the Worseley Building**, see http://lida.leeds.ac.uk/about-lida/contact/
+
+For a full agenda see https://github.com/Robinlovelace/GIS4TA/blob/master/docs/2017-workshop-application.Rmd
+
+In terms of preparation, please ensure you have a **laptop** with the necessary software for the tutorials installed including an *updated version of R* and the ability to install packages.
+
+We assume you already have some packages already, which can be installed as follows:
+
+```{r, eval=FALSE}
+install.packages(c("osmdata", "stplanr", "sf", "dodgr"))
+```
+
+The workshop will be a mixture of demonstrations, challenges, and opportunities to discuss your own research. We hope the event will offer a place for likeminded researchers to form new professional relationships and open up doors for future research collaborations.
+
+Robin Lovelace, Mark Padgham and Craig Morton (the GIS4TA 2017 organisers)
+
+   We hope that you have a safe journey to the workshop and look forward to welcoming you to LIDA.
+
+    
+
+    Sincerely,
+
+     
+
+     The GIS4TA Team.
