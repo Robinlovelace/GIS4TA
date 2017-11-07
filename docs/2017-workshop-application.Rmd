@@ -33,19 +33,29 @@ By the end of the workshop, all participants should be better answer many questi
 
 Day 1:
 
-- Introduction and overview of GIS for transport
-- R for Transport applications (Robin Lovelace)
-- Car fleet data (Craig Morton)
-- OTP Tutuorial (Marcus Young)
-- Hack 1: small-scale issues
+- Set-up and informal meet-and-greet: 09:30 - 10:00
+- Introduction and overview of the workshop: 10:00 - 10:30
+- R for Transport applications (Robin Lovelace): 10:30 - 12:30
+
+Lunch 12:30 - 13:30
+
+- Car fleet data (Craig Morton): 13:30 - 14:30
+- OTP Tutuorial (Marcus Young): 14:30 - 16:30
+- Hack set-up: input data and ideas: 16:30 - 17:00
 
 Day 2:
 
-- Lightning talks
-- OSM for Transport applications (Mark Padgham)
-- Microsimulation tutorial (Andrew Smith)
-- Hack 2: scaling-up 
-- Presentations and prizes
+- Lightning talks - 5 minutes and map presentations: 09:00 - 09:30
+- OSM for Transport applications (Mark Padgham): 09:30 - 11:15
+
+- Coffee break: 11:15 - 11:30
+
+- Microsimulation tutorial (Andrew Smith): 11:30 - 12:30
+
+Lunch 12:30 - 13:30
+
+- Hackathon: 13:30 - 16:30 
+- Presentations: 16:30 - 17:00
 
 
 # How to apply
