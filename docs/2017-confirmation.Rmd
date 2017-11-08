@@ -21,7 +21,7 @@ install.packages(c("osmdata", "stplanr", "sf", "dodgr", "jsonlite", "tidyverse",
 
 To check your set-up is working, try executing the commands below in R.
 If you get a result like the one [here](https://github.com/Robinlovelace/GIS4TA/blob/master/figures/leeds-map.png?raw=true), your set-up is good.
-Note: this results could help you navigate here, from Leeds rail station to the Worsley building:
+Note: this result could help you navigate here, from Leeds rail station to the Worsley building:
 
 ```{r, message=FALSE, warning=FALSE}
 library(sf)
@@ -36,6 +36,7 @@ r = viaroute2sldf(r)
 destination = opq("leeds uk") %>% add_osm_feature("name", "Worsley Building") %>% osmdata_sf()
 m = mapview::mapview(r) +
   mapview::mapview(destination$osm_polygons)
+m # display the map!
 # mapview::mapshot(m, file = "leeds-map.png")
 ```
 
