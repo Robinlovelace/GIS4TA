@@ -20,9 +20,10 @@ install.packages(c("osmdata", "stplanr", "sf", "dodgr", "jsonlite", "tidyverse",
 ```
 
 To check your set-up is working, try executing the commands below in R.
-If you get a result like that printed here, it works!
+If you get a result like the one [here](https://github.com/Robinlovelace/GIS4TA/blob/master/figures/leeds-map.png?raw=true), your set-up is good.
+Note: this results could help you navigate here, from Leeds rail station to the Worsley building:
 
-```{r}
+```{r, message=FALSE, warning=FALSE}
 library(sf)
 library(osmdata)
 library(tidyverse)
@@ -33,9 +34,12 @@ library(dodgr)
 r = viaroute(startlng = -1.54735, startlat = 53.7961, endlng = -1.555641, endlat = 53.803290)
 r = viaroute2sldf(r)
 destination = opq("leeds uk") %>% add_osm_feature("name", "Worsley Building") %>% osmdata_sf()
-mapview::mapview(r) +
+m = mapview::mapview(r) +
   mapview::mapview(destination$osm_polygons)
+# mapview::mapshot(m, file = "leeds-map.png")
 ```
+
+![](https://github.com/Robinlovelace/GIS4TA/blob/master/figures/leeds-map.png?raw=true)
 
 
 The workshop will be a mixture of demonstrations, challenges, and opportunities to discuss your own research. We hope the event will offer a place for likeminded researchers to form new professional relationships and open up doors for future research collaborations.
