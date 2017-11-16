@@ -13,6 +13,21 @@ output:
 knitr::opts_knit$set(root.dir = "..")
 ```
 
+# development versions
+
+Much of this code uses the latest 'development' versions of software packages.
+These are not what you get from a standard `install.packages()` in R, but can be
+easily installed directly from github source code with the `devtools` package.
+to ensure everything works as intended, it will likely help to run the following
+lines
+```{r}
+install.packages ("devtools")
+library (devtools)
+install_github("tidyverse/ggplot2")
+install_github("ropensci/osmdata")
+install_github("ATFutures/dodgr")
+```
+
 # bristol data
 
 The street network for Bristol can be obtained with these lines:
