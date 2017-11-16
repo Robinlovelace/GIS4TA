@@ -132,7 +132,6 @@ select(dt, x) # select columns
 slice(dt, 2) # 'slice' rows
 ```
 
-
 ## The nature of transport data
 
 - The same as handling any other kind of data in R
@@ -159,8 +158,13 @@ Their features are segments which can be assigned values representing 'flow', th
 
 ```{r, eval=FALSE}
 devtools::install_github("ropensci/stplanr", ref = "sfr") # dev version of stplanr
+u = "https://github.com/Robinlovelace/GIS4TA-data/archive/master.zip"
+download.file(u, destfile = "master.zip")
+unzip("master.zip")
+file.rename("GIS4TA-data-master", "GIS4TA-data")
 ```
 
+## The libraries we'll use
 
 ```{r}
 library(sf)
@@ -171,7 +175,7 @@ library(tidyverse)
 ## Load and inspect the zone data
 
 ```{r}
-z = readRDS("gis4ta-data/z.Rds")
+z = readRDS("GIS4TA-data/z.Rds")
 z = st_as_sf(z) # convert to an sf object
 plot(z[c("all", "car_driver", "bicycle", "foot")])
 ```
@@ -183,13 +187,13 @@ od_data = read_csv("https://media.githubusercontent.com/media/npct/pct-outputs-r
 od_data = od_data %>% filter(all > 50, geo_code1 %in% z$geo_code,
                              geo_code2 %in% z$geo_code) 
 od_data$id = NULL
-write_csv(od_data, "gis4ta-data/od_attributes.csv")
+write_csv(od_data, "GIS4TA-data/od_attributes.csv")
 ```
 
 ## Convert OD data to geographical 'desire lines'
 
 ```{r, message=FALSE}
-od = read_csv("gis4ta-data/od_attributes.csv")
+od = read_csv("GIS4TA-data/od_attributes.csv")
 l = od2line(flow = od, zones = z)
 plot(l$geometry)
 ```
