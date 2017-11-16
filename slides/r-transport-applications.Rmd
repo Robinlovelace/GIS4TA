@@ -250,6 +250,8 @@ plot(rnet$geometry, lwd = rnet$bicycle)
 
 ## Exercises 
 
+- Check-out the slides in the slides folder of: https://github.com/Robinlovelace/GIS4TA
+
 - Read-up and follow the examples in the vignette [introducing-stplanr](https://cran.r-project.org/web/packages/stplanr/vignettes/introducing-stplanr.html)
 - Find and plot all desire lines where cycling is more common than walking 
 - Find all desire which are less than 2.5 km 
@@ -289,6 +291,11 @@ library(osmdata)
 q = opq(bbox = "Bristol") %>% 
   add_feature(key = "railway", value = "station")
 stations = osmdata_sf(q = q)
+```
+
+## Railways in Bristol
+
+```{r}
 plot(l$geometry)
 plot(stations$osm_points$geometry, add = T, col = "green")
 ```
