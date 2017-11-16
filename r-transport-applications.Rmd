@@ -1,0 +1,122 @@
+---
+title: "Data carpentry for sustainable transport planning: the Propensity to Cycle Tool"
+author: "Robin Lovelace, University of Leeds, \n `r Sys.Date()`"
+date: "Slides: [rpubs.com/RobinLovelace](http://rpubs.com/RobinLovelace)"
+output:
+  ioslides_presentation:
+    widescreen: true
+    transition: slower
+    logo: ../figures/its-logo-square.png
+    keep_md: true
+---
+
+```{r}
+knitr::opts_knit$set(root.dir = "..")
+```
+
+
+## The nature of transport data
+
+- The same as handling any other kind of data in R
+- But: dynamic, complex (e.g. GTFS) reliant on official feeds
+- That's why using a language that is powerful and flexible is good
+
+## 
+
+## Worked example: mode of travel in Bristol
+
+- We'll load and visualise some transport data
+- Get set-up with the pkgs:
+
+```{r}
+devtools::install_github("ropensci/stplanr", ref = "sfr") # dev version of stplanr
+library(tidyverse)
+library(stplanr)
+library(sf)
+```
+
+## Load and inspect the zone data
+
+```{r}
+z = readRDS("gis4ta-data/z.Rds")
+z = st_as_sf(z) # convert to an sf object
+plot(z[c("all", "car_driver", "bicycle", "foot")])
+```
+
+## Download and preprocess the OD data
+
+```{r, eval=FALSE}
+od_data = read_csv("https://media.githubusercontent.com/media/npct/pct-outputs-regional-notR/master/commute/msoa/avon/od_attributes.csv")
+od_data = od_data %>% filter(all > 50, geo_code1 %in% z$geo_code,
+                             geo_code2 %in% z$geo_code) 
+od_data$id = NULL
+write_csv(od_data, "gis4ta-data/od_attributes.csv")
+```
+
+## Convert OD data to geographical 'desire lines'
+
+```{r, message=FALSE}
+od = read_csv("gis4ta-data/od_attributes.csv")
+l = od2line(flow = od, zones = z)
+plot(l$geometry)
+```
+
+## Analysing where people walk
+
+```{r}
+sel_walk = l$foot > 19
+l_walk = l[sel_walk,]
+plot(l$geometry)
+plot(l_walk, add = T, col = "red")
+```
+
+## Subsetting in the tidyverse
+
+```{r}
+l_walk2 = l %>% 
+  filter(bicycle > 19)
+plot(l$geometry)
+plot(l_walk2$geometry, add = T, col = "green")
+```
+
+## Exercises 
+
+- Find and plot all desire lines where cycling is more common than walking 
+- Find all desire which are less than 2.5 km 
+- Find all lines in which driving is more common than walking AND are 
+- Find and plot all desire lines that are longer. Where are they?
+- Use the following code to download bus stops in the area
+
+## Solution
+
+```{r}
+l$distsf = as.numeric(st_length(l))
+summary(l$distsf)
+l_drive_short = l %>% 
+  filter(distsf < 1000 & car_driver > foot)
+l_drive_short2 = l %>% 
+  filter(distsf < 1000) %>% 
+  filter(car_driver > foot)
+l_short = l %>% 
+  filter(distsf < 1000)
+plot(l_drive_short[6])
+```
+
+
+```{r, eval=FALSE}
+devtools::install_github("osmdatar/osmdata")
+```
+
+
+## Advanced challenge: download transport data with osmdata 
+
+- You'll need to read-up on the osmdata vignette
+
+```{r}
+library(osmdata)
+q = opq(bbox = "Leeds") %>% 
+  add_feature(key = "railway", value = "station")
+stations = osmdata_sf(q = q)
+plot(l[6])
+plot(stations$osm_points, add = T)
+```

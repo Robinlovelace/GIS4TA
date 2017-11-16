@@ -1,0 +1,288 @@
+---
+title: "R for Transport Applications: getting up-to-speed"
+author: "Robin Lovelace, University of Leeds, \n `r Sys.Date()`"
+date: "Slides: [rpubs.com/RobinLovelace](http://rpubs.com/RobinLovelace)"
+output:
+  ioslides_presentation:
+    widescreen: true
+    transition: slower
+    keep_md: true
+---
+
+```{r, echo=FALSE}
+knitr::opts_knit$set(root.dir = "..")
+```
+
+## Why data carpentry?
+
+<blockquote class="twitter-tweet" data-lang="en"><p lang="en" dir="ltr">Data analysts and &#39;scientists&#39;: don&#39;t wrangle, munge or &#39;hack&#39; your valuable datasets. Use <a href="https://twitter.com/hashtag/datacarpentry?src=hash">#datacarpentry</a>: <a href="https://t.co/gXrlIJH91R">https://t.co/gXrlIJH91R</a> <a href="https://t.co/GSWS7O7zBz">pic.twitter.com/GSWS7O7zBz</a></p>&mdash; Robin Lovelace (@robinlovelace) <a href="https://twitter.com/robinlovelace/status/833622374037721089">February 20, 2017</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+- If you 'hack' or 'munge' data, it won't scale
+- So ultimately it's about being able to handle Big Data
+- We'll cover the basics of data frames and tibbles
+- And the basics of **dplyr**, an excellent package for data carpentry
+    - **dplyr** is also compatible with the **sf** package
+
+## The data frame
+
+The humble data frame is at the heart of most analysis projects:
+
+```{r}
+d = data.frame(x = 1:3, y = c("A", "B", "C"))
+d
+```
+
+In reality this is a list, making function work on each column:
+
+```{r}
+summary(d)
+plot(d)
+```
+
+## Subsetting
+
+In base R, there are many ways to subset:
+
+```{r}
+d[1,] # the first line
+d[,1] # the first column
+d$x # the first column
+d [1] # the first column, as a data frame
+```
+
+## The tibble
+
+Recently the data frame has been extended:
+
+```{r}
+library("tibble")
+dt = tibble(x = 1:3, y = c("A", "B", "C"))
+dt
+```
+
+## Advantages of the tibble
+
+It comes down to efficiency and usability
+
+ - When printed, the tibble diff reports class
+ - Character vectors are not coerced into factors
+ - When printing a tibble diff to screen, only the first ten rows are displayed
+ 
+## Practical prerequisites
+
+You'll need the `efficient` package installed to run this next part:
+
+```{r, eval=FALSE}
+devtools::install_github("csgillespie/efficient")
+library(efficient)
+```
+
+ 
+## dplyr
+
+Like tibbles, has advantages over historic ways of doing things
+
+- Type stability (data frame in, data frame out)
+- Consistent functions - functions not `[` do everything
+- Piping make complex operations easy
+
+```{r, eval=FALSE}
+ghg_ems %>%
+  filter(!grepl("World|Europe", Country)) %>% 
+  group_by(Country) %>% 
+  summarise(Mean = mean(Transportation),
+            Growth = diff(range(Transportation))) %>%
+  top_n(3, Growth) %>%
+  arrange(desc(Growth))
+```
+
+## Why pipes?
+
+```{r, eval=FALSE}
+wb_ineq %>% 
+  filter(grepl("g", Country)) %>%
+  group_by(Year) %>%
+  summarise(gini = mean(gini, na.rm  = TRUE)) %>%
+  arrange(desc(gini)) %>%
+  top_n(n = 5)
+```
+
+vs
+
+```{r, eval=FALSE}
+top_n(
+  arrange(
+    summarise(
+      group_by(
+        filter(wb_ineq, grepl("g", Country)),
+        Year),
+      gini = mean(gini, na.rm  = TRUE)),
+    desc(gini)),
+  n = 5)
+```
+
+## Subsetting with dplyr
+
+Only 1 way to do it, making life simpler:
+
+```{r, message=FALSE}
+library(dplyr)
+select(dt, x) # select columns
+slice(dt, 2) # 'slice' rows
+```
+
+
+## The nature of transport data
+
+- The same as handling any other kind of data in R
+- But: dynamic, complex (e.g. GTFS) reliant on official feeds
+- That's why using a language that is powerful and flexible is good
+
+## Types of transport data I
+
+- Areal units: transport can be understood simply in terms of zonal aggregates such as the main mode and average distance of trips made people living in a particular zone.
+- Nodes: these are points in the transport system that can represent common origins and destinations (e.g. with one centroid per zone) and public transport stations such as bus stops and rail stations.
+- Desire lines: straight lines that represent 'origin-destination' data that records how many people travel (or could travel) between places (points or zones) in geographic space.
+
+## Types of transport data II
+
+- Routes: these are cirquitous (non-straight) routes, typically representing the 'optimal' path along the route network between origins and destinations along the desire lines defined in the previous bullet point.
+- Route networks: these represent the system of roads, paths and other linear features in an area. They can be represented as purely geographic entities or as a graph.
+Their features are segments which can be assigned values representing 'flow', the number of people expected to use a particular street or path.
+- Agents: these are the lowest-level but hardest to model entities in transport systems --- mobile entities like you and me.
+
+## Worked example: mode of travel in Bristol
+
+- We'll load and visualise some transport data
+- Get set-up with the pkgs:
+
+```{r, eval=FALSE}
+devtools::install_github("ropensci/stplanr", ref = "sfr") # dev version of stplanr
+```
+
+
+```{r}
+library(sf)
+library(stplanr)
+library(tidyverse)
+```
+
+## Load and inspect the zone data
+
+```{r}
+z = readRDS("gis4ta-data/z.Rds")
+z = st_as_sf(z) # convert to an sf object
+plot(z[c("all", "car_driver", "bicycle", "foot")])
+```
+
+## Download and preprocess the OD data
+
+```{r, eval=FALSE}
+od_data = read_csv("https://media.githubusercontent.com/media/npct/pct-outputs-regional-notR/master/commute/msoa/avon/od_attributes.csv")
+od_data = od_data %>% filter(all > 50, geo_code1 %in% z$geo_code,
+                             geo_code2 %in% z$geo_code) 
+od_data$id = NULL
+write_csv(od_data, "gis4ta-data/od_attributes.csv")
+```
+
+## Convert OD data to geographical 'desire lines'
+
+```{r, message=FALSE}
+od = read_csv("gis4ta-data/od_attributes.csv")
+l = od2line(flow = od, zones = z)
+plot(l$geometry)
+```
+
+## Analysing where people walk
+
+```{r}
+sel_walk = l$foot > 19
+l_walk = l[sel_walk,]
+plot(l$geometry)
+plot(l_walk, add = T, col = "red")
+```
+
+## Subsetting in the tidyverse
+
+```{r}
+l_walk2 = l %>% 
+  filter(bicycle > 19)
+plot(l$geometry)
+plot(l_walk2$geometry, add = T, col = "green")
+```
+
+## From desire lines to routes
+
+Let's find the cycling route for the top 3 cycled desire lines:
+
+```{r}
+l_cycle = l %>% top_n(n = 5, wt = bicycle)
+odc = line2df(l_cycle)
+r_cycle = viaroute(odc$fy, odc$fx, odc$ty, odc$tx) %>% 
+  viaroute2sldf() %>% 
+  st_as_sf()
+```
+
+> - What just happened?
+
+## Plotting the result interactively
+
+```{r}
+library(tmap)
+tmap_mode("view")
+qtm(r_cycle)
+```
+
+## Creating a 'route network'
+
+- Route networks combine and aggregate routes:
+
+```{r}
+r_cycle$bicycle = 1
+rnet = overline(r_cycle, attrib = "bicycle")
+plot(rnet$geometry, lwd = rnet$bicycle)
+```
+
+## Exercises 
+
+- Read-up and follow the examples in the vignette [introducing-stplanr](https://cran.r-project.org/web/packages/stplanr/vignettes/introducing-stplanr.html)
+- Find and plot all desire lines where cycling is more common than walking 
+- Find all desire which are less than 2.5 km 
+- Find all lines in which driving is more common than walking AND are 
+- Find and plot all desire lines that are longer. Where are they?
+- Use the following code to download bus stops in the area
+
+## Solutions
+
+```{r}
+l$distsf = as.numeric(st_length(l))
+summary(l$distsf)
+l_drive_short = l %>% 
+  filter(distsf < 1000 & car_driver > foot)
+l_drive_short2 = l %>% 
+  filter(distsf < 1000) %>% 
+  filter(car_driver > foot)
+l_short = l %>% 
+  filter(distsf < 1000)
+plot(l_drive_short[6])
+```
+
+
+```{r, eval=FALSE}
+devtools::install_github("osmdatar/osmdata")
+```
+
+
+## Advanced challenge: download transport data with osmdata 
+
+- You'll need to read-up on the osmdata vignette
+
+```{r}
+library(osmdata)
+q = opq(bbox = "Bristol") %>% 
+  add_feature(key = "railway", value = "station")
+stations = osmdata_sf(q = q)
+plot(l$geometry)
+plot(stations$osm_points$geometry, add = T, col = "green")
+```
