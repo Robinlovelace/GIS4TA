@@ -257,6 +257,8 @@ plot(rnet$geometry, lwd = rnet$bicycle)
 - Find and plot all desire lines that are longer. Where are they?
 - Use the following code to download bus stops in the area
 
+- Regarding the hackathon: think about decarbonising the Bristolian commute
+
 ## Solutions
 
 ```{r}
