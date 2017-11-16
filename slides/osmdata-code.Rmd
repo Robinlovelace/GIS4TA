@@ -1,0 +1,155 @@
+---
+title: "Open Street Map for Transport Applications"
+author: 
+  - name: "Mark Padgham"
+    url: https://github.com/mpadge
+date: 2017-11-17
+output: 
+    html_document:
+        theme: flatly
+---
+
+```{r, echo=FALSE}
+knitr::opts_knit$set(root.dir = "..")
+```
+
+# bristol data
+
+The street network for Bristol can be obtained with these lines:
+```{r}
+library (osmdata)
+dat <- opq ("bristol") %>%
+    add_osm_feature (key = "highway") %>%
+    osmdata_sf ()
+```
+It's probably wise to save these data for future re-use:
+```{r}
+save (dat, file = "osm-bristol.rda")
+```
+They can then be re-loaded with
+```{r}
+load ("osm-bristol.rda")
+```
+
+## Viewing data#1
+
+These data can not be directly viewed using any current spatial visualisation
+packages. The following code simply fails:
+```{r}
+library (mapview)
+mapview (dat$osm_lines)
+```
+
+This code works, but generates rather visually unappealing results, and is
+notably slow. (Execution of these lines is not recommended.)
+```{r}
+library (ggplot2)
+library (sf)
+dat <- dat$osm_lines
+g <- ggplot () + geom_sf(data = dat)
+ggsave (g, file = "bristol-ggplot.eps")
+```
+
+# dodgr
+
+`dodgr` converts `sf`-format line data into a simple tabular network.
+```{r}
+library (dodgr)
+net <- weight_streetnet (dat$osm_lines, wt_profile = "bicycle")
+```
+The data can be examined with:
+```{r}
+head (net)
+dim (net)
+```
+
+## dodgr distances
+
+An example of calculating distances between two points:
+```{r}
+from <- data.frame (x = -2.7, y = 51.4)
+to <- data.frame (x = -2.6, y = 51.5)
+dodgr_dists (net, from = fr, to = to)
+```
+
+## dodgr flows
+
+To calculate flows, we need to specify the vertices of the network in terms of
+their `id` values (as defined by OSM).
+
+```{r}
+verts <- dodgr_vertices (net)
+head (verts)
+```
+The following lines randomly select `npts = 100` of these:
+```{r}
+npts <- 100
+pts <- sample (verts$id, size = npts)
+```
+A 'flow' layer is then simply a matrix with numbers of rows equal to the length
+of `from` points and numbers of columns equal to the length of `to` points. In
+this case, it's a square matrix with both of these equal to `npts`.
+```{r}
+flows <- matrix (1, nrow = npts, ncol = npts)
+```
+The actual flows can then be calculated with:
+```{r}
+f <- dodgr_flows (net, from = pts, to = pts, flows = flows) %>%
+        merge_directed_flows ()
+```
+The `merge_directed_flows` removes all edges with zero flow, and so yields a
+more manageable table for subsequent manipulation and visualisation.
+
+## viewing data#2
+
+The following code generates a visual representation of the flows.
+```{r}
+require (osmplotr)
+require (ggplot2)
+bb <- getbb ("bristol")
+f$flow <- f$flow / max (f$flow)
+cols <- colorRampPalette (c ("dodgerblue", "firebrick")) (30)
+map <- osm_basemap (bb, bg = "#FFEEBB") %>%
+    add_colourbar (zlims = range (f$flow), col = cols)
+map <- map +
+    geom_segment (aes (x = from_lon, y = from_lat, xend = to_lon, yend = to_lat,
+                       colour = flow, size = flow), size = 3 * f$flow,
+                  data = f) +
+    scale_colour_gradient (low = "dodgerblue", high = "firebrick", guide = "none")
+```
+Typing `map` will open a viewing window, but rendering may be very slow for
+large graphs, so it may be quicker to plot to a file and view that separately:
+```{r}
+print_osm_map (map, file = "bristol-flows.png")
+```
+(The function `print_osm_map()` primarily ensures that the map is printed in
+proportion to the bounding box.)
+
+Finally, the following function can be used to generate flow values between
+differing numbers of random routing points. This illustrates the kinds of ways
+that `dodgr` can be used to calculate flows.
+```{r}
+make_bristol_map <- function (net, npts = 100)
+{
+    pts <- sample (verts$id, size = npts)
+    flows <- matrix (1, nrow = npts, ncol = npts)
+    f <- dodgr_flows (net, from = pts, to = pts, flows = flows) %>%
+        merge_directed_flows ()
+    f$flow <- f$flow / max (f$flow)
+    cols <- colorRampPalette (c ("dodgerblue", "firebrick")) (30)
+    map <- osm_basemap (bb, bg = "#FFEEBB") %>%
+        add_colourbar (zlims = range (f$flow), col = cols)
+    map <- map +
+        geom_segment (aes (x = from_lon, y = from_lat, xend = to_lon, yend = to_lat,
+                           colour = flow, size = flow), size = 3 * f$flow,
+                      data = f) +
+            scale_colour_gradient (low = "dodgerblue",
+                                   high = "firebrick", guide = "none")
+    fname <- paste0 ("bristol-flows", npts, ".png")
+    print_osm_map (map, file = fname)
+}
+```
+A map can then be produced with,
+```{r}
+make_bristol_map (net, 100)
+```
