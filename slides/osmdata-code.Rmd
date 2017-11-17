@@ -32,6 +32,7 @@ install_github("ATFutures/dodgr")
 
 The street network for Bristol can be obtained with these lines:
 ```{r}
+library(magrittr) # for pipes
 library (osmdata)
 dat <- opq ("bristol") %>%
     add_osm_feature (key = "highway") %>%
